@@ -1,51 +1,60 @@
 import tkinter as tk
-import tkinter.messagebox
+import tkinter.messagebox 
 from tkinter.constants import SUNKEN
 
 window = tk.Tk()
-window.title('Aleem Ahmad')
+window.title('ALEEM AHMAD')
+
 window.attributes('-fullscreen', True)
+
 frame = tk.Frame(master=window, bg="grey",padx=10)
 frame.pack(fill=tk.BOTH, expand=True)
-entry = tk.Entry(master=frame, relief=SUNKEN,borderwidth=3, width=30)
-entry.grid(row=0, column=0, columnspan=3, ipady=2, pady=2, sticky="nsew")
+entry = tk.Entry(master=frame, relief=SUNKEN,
+ borderwidth=3, width=30)
+entry.grid(row=0, column=0, columnspan=4, ipady=2, pady=2, sticky="nsew")
 
 def myclick(number):
-    entry.insert(tk.END, number)
+    entry.insert(tk.END,number)
 
 def equal():
     try:
-        result = eval(entry.get().replace(',', '.'))
+        y = str(eval(entry.get()))
         entry.delete(0, tk.END)
-        entry.insert(0, str(result))
-    except Exception:
-        entry.delete(0, tk.END)
-        entry.insert(0, "Error")
+        entry.insert(0,y)
+    except:
+        tkinter.messagebox.showinfo("Bermasalah","syntax Error")
 
 def comma():
     current = entry.get()
-    if ',' not in current:
+    if current == "":
+        entry.insert(tk.END, '0,')
+    elif current[-1] != ',':
         entry.insert(tk.END, ',')
-        
-def percentage() :
+
+def percentage():
     current = entry.get()
     try:
-        if not current:
-            return
         result = eval(current.replace(',', '.')) / 100
-        entry.delete(0,tk.END)
+        entry.delete(0, tk.END)
         entry.insert(0, str(result))
     except Exception as e:
         entry.delete(0, tk.END)
-        entry.insert(0, "Error")
+        entry.insert(0, "Bermasalah")
 
-def pangkat():
+def equal():
     try:
-        current_value = eval(entry.get())
+        result = eval(entry.get().replace(',', '.').replace('^',''))
         entry.delete(0, tk.END)
-        entry.insert(0, current_value ** 2)
+        entry.insert(0, str(result))
     except Exception as e:
-        tkinter.messagebox.showinfo("Error","Syntax Error:" + str(e))
+        entry.delete(0, tk.END)
+        entry.insert(0, "Bermasalah")
+def minus():
+    current = entry.get()
+    if not current.startswith('-'):
+        entry.insert(0, '-')
+    else:
+        entry.delete(0, 1)
 
 def square_root():
     current = entry.get()
@@ -55,7 +64,7 @@ def square_root():
         entry.insert(0, str(result))
     except ValueError:
         entry.delete(0, tk.END)
-        entry.insert(0, "Error")
+        entry.insert(0, "Bermasalah")
 
 def clear():
     entry.delete(0, tk.END)
@@ -135,7 +144,7 @@ button_div.grid(row=1, column=3, pady=2, sticky="nsew")
 
 button_pangkat = tk.Button(master=frame, text="^", padx=15,
                         pady=5, width=3, bg='#004d4d', fg='white', command=lambda:
-myclick('**'))
+myclick(''))
 button_pangkat.grid(row=5, column=3, pady=2, sticky="nsew")
 
 button_square = tk.Button(master=frame, text="√", padx=15,
@@ -161,6 +170,11 @@ button_equal = tk.Button(master=frame, text="=", padx=15,
                         pady=5, width=12, bg='#004d4d', fg='white', 
 command=equal)
 button_equal.grid(row=6, column=0, columnspan=4, pady=2, sticky="nsew")
+
+button_mines = tk.Button(master=frame, text="Mines", padx=15,
+                         pady=5, width=3, bg='darkblue', fg='white', command=minus)
+button_mines.grid(row=6, column=3, pady=2, sticky="nsew")
+
 
 for i in range(8):
     frame.grid_rowconfigure(i, weight=1)
